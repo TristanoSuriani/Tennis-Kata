@@ -1,0 +1,36 @@
+@startuml
+
+title Classes - Class Diagram
+
+
+class Match {
+  -PlayerDefinition player1 (1..1)
+  -PlayerDefinition player2 (1..1)
+  -MatchEvent events (1..n)
+}
+
+class MatchEvent {
+    -LocalDateTime time (1..1)
+    -MatchEventType type (1..1)
+    -Note note (0..1)
+}
+
+enum MatchEventType {
+    POINT_PLAYER1
+    POINT_PLAYER2
+    GAME_PLAYER1
+    GAME_PLAYER2
+    SET_PLAYER1
+    SET_PLAYER2
+    PLAYER1_WON
+    PLAYER2_WON
+}
+
+class Note {
+    -String value
+}
+
+Match -down-> MatchEvent
+MatchEvent -down-> MatchEventType
+MatchEvent -down-> Note
+@enduml
