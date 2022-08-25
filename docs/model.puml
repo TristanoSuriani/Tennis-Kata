@@ -13,7 +13,7 @@ class Match {
 }
 
 class MatchId {
-    -UUID uuid (1..1)
+    -UUID value (1..1)
 }
 
 enum SetsToWin {
@@ -25,7 +25,6 @@ class MatchEvent {
     -LocalDateTime timestamp (1..1)
     -InstantId instantId (1..1)
     -MatchEventType type (1..1)
-    -Note note (0..1)
 }
 
 enum MatchEventType {
