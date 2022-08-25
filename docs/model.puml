@@ -1,12 +1,19 @@
 @startuml
 
-title Classes - Class Diagram
-
+title Domain Model
 
 class Match {
   -PlayerDefinition player1 (1..1)
   -PlayerDefinition player2 (1..1)
   -MatchEvent events (1..n)
+  -SetsToWin setsToWin (1..1)
+  --
+  +Score getScore()
+}
+
+enum SetsToWin {
+    TWO (2)
+    THREE (3)
 }
 
 class MatchEvent {
@@ -16,21 +23,71 @@ class MatchEvent {
 }
 
 enum MatchEventType {
+    MATCH_STARTED
     POINT_PLAYER1
     POINT_PLAYER2
+    DEUCE
+    ADVANTAGE_IN_PLAYER1
+    ADVANTAGE_IN_PLAYER2
     GAME_PLAYER1
     GAME_PLAYER2
+    TIE_BREAK
     SET_PLAYER1
     SET_PLAYER2
     PLAYER1_WON
     PLAYER2_WON
+    MATCH_CANCELLED
 }
 
-class Note {
-    -String value
+class Score {
+    -Set sets (1..n)
+}
+
+class Game {
+    -Points points (1..1)
+}
+
+class Points {
+    -PointsValue player1 (1..1)
+    -PointsValue player2 (1..1)
+}
+
+enum PointsValue {
+    LOVE (0)
+    FIFTEEN (15)
+    THIRTY (30)
+    FOURTY (40)
+    ADVANTAGE_IN (40A)
+}
+
+class Set {
+    -Game game(1..n)
+}
+
+class PlayerDefinition {
+    -Name name (1..1)
+    -PlayerId playerId (1..1)
+}
+
+class Name {
+    -String value (1..1)
+}
+
+class PlayerId {
+    -String value (1..1)
 }
 
 Match -down-> MatchEvent
-MatchEvent -down-> MatchEventType
-MatchEvent -down-> Note
+Match -left-> SetsToWin
+MatchEvent -left-> MatchEventType
+
+Match .right-> Score
+Score -down-> Set
+Set -down-> Game
+Game -down-> Points
+Points -right-> PointsValue
+
+Match -down-> PlayerDefinition
+PlayerDefinition -down-> Name
+PlayerDefinition -down-> PlayerId
 @enduml
