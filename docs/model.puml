@@ -46,18 +46,20 @@ enum MatchEventType {
 
 class Score {
     -Set sets (1..n)
+    -MatchPoints player1 (1..1)
+    -MatchPoints player2 (1..1)
+}
+
+class MatchPoints {
+    -int value(1..1, 0 <= x <= 2|3))
 }
 
 class Game {
-    -Points points (1..1)
+    -GamePoints player1 (1..1)
+    -GamePoints player2 (1..1)
 }
 
-class Points {
-    -PointsValue player1 (1..1)
-    -PointsValue player2 (1..1)
-}
-
-enum PointsValue {
+enum GamePoints {
     LOVE (0)
     FIFTEEN (15)
     THIRTY (30)
@@ -67,6 +69,12 @@ enum PointsValue {
 
 class Set {
     -Game game(1..n)
+    -SetPoints player1(1..1)
+    -SetPoints player2(1..1)
+}
+
+class SetPoints {
+    -int value(1..1, >= 0)
 }
 
 class PlayerDefinition {
@@ -94,9 +102,10 @@ MatchEvent -down-> InstantId
 
 Match .right-> Score
 Score -down-> Set
+Score -right-> MatchPoints
 Set -down-> Game
-Game -down-> Points
-Points -right-> PointsValue
+Set -down-> SetPoints
+Game -down-> GamePoints
 
 Match -down-> PlayerDefinition
 PlayerDefinition -down-> Name

@@ -26,7 +26,7 @@ public class Guard {
 
 	public static <T> void isNotEmpty(List<T> l) {
 		if (l.isEmpty()) {
-
+			throw new EmptyListException();
 		}
 	}
 }
