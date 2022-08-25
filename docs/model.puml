@@ -3,6 +3,7 @@
 title Domain Model
 
 class Match {
+  -MatchId matchId (1..1)
   -PlayerDefinition player1 (1..1)
   -PlayerDefinition player2 (1..1)
   -MatchEvent events (1..n)
@@ -11,13 +12,18 @@ class Match {
   +Score getScore()
 }
 
+class MatchId {
+    -UUID uuid (1..1)
+}
+
 enum SetsToWin {
     TWO (2)
     THREE (3)
 }
 
 class MatchEvent {
-    -LocalDateTime time (1..1)
+    -LocalDateTime timestamp (1..1)
+    -InstantId instantId (1..1)
     -MatchEventType type (1..1)
     -Note note (0..1)
 }
@@ -77,9 +83,15 @@ class PlayerId {
     -String value (1..1)
 }
 
+class InstantId {
+    -int value (1..1, >= 0)
+}
+
+Match -down-> MatchId
 Match -down-> MatchEvent
 Match -left-> SetsToWin
 MatchEvent -left-> MatchEventType
+MatchEvent -down-> InstantId
 
 Match .right-> Score
 Score -down-> Set
