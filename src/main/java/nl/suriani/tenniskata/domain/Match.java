@@ -21,4 +21,12 @@ public record Match(MatchId matchId,
 
 		matchEvents = List.copyOf(matchEvents);
 	}
+
+	public Match(PlayerDefinition player1, PlayerDefinition player2, SetsToWin setsToWin) {
+		this(new MatchId(),
+				player1,
+				player2,
+				List.of(MatchEvent.confirmed()),
+				setsToWin);
+	}
 }

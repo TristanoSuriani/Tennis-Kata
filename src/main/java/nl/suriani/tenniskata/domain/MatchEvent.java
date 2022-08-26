@@ -12,4 +12,12 @@ public record MatchEvent(LocalDateTime timestamp, InstantId instantId, MatchEven
 		Guard.isNotNull(instantId);
 		Guard.isNotNull(type);
 	}
+
+	public MatchEvent(InstantId instantId, MatchEventType type) {
+		this(LocalDateTime.now(), instantId, type);
+	}
+
+	public static MatchEvent confirmed() {
+		return new MatchEvent(new InstantId(0), MatchEventType.MATCH_CONFIRMED);
+	}
 }

@@ -6,4 +6,8 @@ public final class MatchId extends ValueType<UUID> {
 	public MatchId(UUID value) {
 		super(value);
 	}
+
+	public MatchId() {
+		this(UUID.randomUUID());
+	}
 }

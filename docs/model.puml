@@ -28,6 +28,7 @@ class MatchEvent {
 }
 
 enum MatchEventType {
+    MATCH_CONFIRMED
     MATCH_STARTED
     POINT_PLAYER1
     POINT_PLAYER2
