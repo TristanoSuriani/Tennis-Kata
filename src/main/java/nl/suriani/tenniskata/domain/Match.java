@@ -1,10 +1,14 @@
 package nl.suriani.tenniskata.domain;
 
+import nl.suriani.tenniskata.domain.enumeration.GamePoints;
 import nl.suriani.tenniskata.domain.enumeration.MatchEventType;
 import nl.suriani.tenniskata.domain.enumeration.SetsToWin;
 import nl.suriani.tenniskata.domain.guard.Guard;
 import nl.suriani.tenniskata.domain.value.InstantId;
 import nl.suriani.tenniskata.domain.value.MatchId;
+import nl.suriani.tenniskata.domain.value.MatchPoints;
+import nl.suriani.tenniskata.domain.value.PlayerId;
+import nl.suriani.tenniskata.domain.value.SetPoints;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -34,7 +38,7 @@ public record Match(MatchId matchId,
 				setsToWin);
 	}
 
-	public Match addPoint(PlayerDefinition player) {
+	public Match addPoint(PlayerId player) {
 		var eventsCopy = new ArrayList<>(matchEvents);
 		var instant = getNextInstant();
 		var pointPlayerEventType = getPointPlayerEventType(player);
@@ -52,12 +56,12 @@ public record Match(MatchId matchId,
 		return new InstantId(max + 1);
 	}
 
-	private MatchEventType getPointPlayerEventType(PlayerDefinition player) {
-		if (player.equals(player1)) {
+	private MatchEventType getPointPlayerEventType(PlayerId player) {
+		if (player.equals(player1.playerId())) {
 			return MatchEventType.POINT_PLAYER1;
 		}
 
-		if (player.equals(player2)) {
+		if (player.equals(player2.playerId())) {
 			return MatchEventType.POINT_PLAYER2;
 		}
 
@@ -65,4 +69,12 @@ public record Match(MatchId matchId,
 	}
 
 
+	public Score getScore() {
+		return new Score(List.of(
+				new Set(List.of(new Game(GamePoints.FIFTEEN, GamePoints.LOVE)),
+						new SetPoints(0),
+						new SetPoints(0))),
+				new MatchPoints(0),
+				new MatchPoints(0));
+	}
 }

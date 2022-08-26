@@ -13,7 +13,7 @@ public enum GamePoints {
 		this.display = display;
 	}
 
-	public String getDisplay() {
+	public String display() {
 		return display;
 	}
 }
