@@ -7,22 +7,22 @@ import nl.suriani.tenniskata.domain.guard.Guard;
 import nl.suriani.tenniskata.domain.value.InstantId;
 import nl.suriani.tenniskata.domain.value.MatchId;
 import nl.suriani.tenniskata.domain.value.MatchPoints;
-import nl.suriani.tenniskata.domain.value.PlayerId;
 import nl.suriani.tenniskata.domain.value.SetPoints;
+import nl.suriani.tenniskata.domain.value.TeamId;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public record Match(MatchId matchId,
-					PlayerDefinition player1,
-					PlayerDefinition player2,
+					TeamDefinition team1,
+					TeamDefinition team2,
 					List<MatchEvent> matchEvents,
 					SetsToWin setsToWin) {
 
 	public Match {
-		Guard.isNotNull(player1);
-		Guard.isNotNull(player2);
+		Guard.isNotNull(team1);
+		Guard.isNotNull(team2);
 		Guard.isNotNull(matchEvents);
 		Guard.isNotEmpty(matchEvents);
 		Guard.isNotNull(setsToWin);
@@ -30,7 +30,7 @@ public record Match(MatchId matchId,
 		matchEvents = List.copyOf(matchEvents);
 	}
 
-	public Match(PlayerDefinition player1, PlayerDefinition player2, SetsToWin setsToWin) {
+	public Match(TeamDefinition player1, TeamDefinition player2, SetsToWin setsToWin) {
 		this(new MatchId(),
 				player1,
 				player2,
@@ -38,12 +38,12 @@ public record Match(MatchId matchId,
 				setsToWin);
 	}
 
-	public Match addPoint(PlayerId player) {
+	public Match addPoint(TeamId team) {
 		var eventsCopy = new ArrayList<>(matchEvents);
 		var instant = getNextInstant();
-		var pointPlayerEventType = getPointPlayerEventType(player);
+		var pointPlayerEventType = getPointPlayerEventType(team);
 		eventsCopy.add(new MatchEvent(instant, pointPlayerEventType));
-		return new Match(matchId, player1, player2, eventsCopy, setsToWin);
+		return new Match(matchId, team1, team2, eventsCopy, setsToWin);
 	}
 
 	private InstantId getNextInstant() {
@@ -56,13 +56,13 @@ public record Match(MatchId matchId,
 		return new InstantId(max + 1);
 	}
 
-	private MatchEventType getPointPlayerEventType(PlayerId player) {
-		if (player.equals(player1.playerId())) {
-			return MatchEventType.POINT_PLAYER1;
+	private MatchEventType getPointPlayerEventType(TeamId team) {
+		if (team.equals(team1.id())) {
+			return MatchEventType.POINT_TEAM1;
 		}
 
-		if (player.equals(player2.playerId())) {
-			return MatchEventType.POINT_PLAYER2;
+		if (team.equals(team2.id())) {
+			return MatchEventType.POINT_TEAM1;
 		}
 
 		throw new IllegalStateException();

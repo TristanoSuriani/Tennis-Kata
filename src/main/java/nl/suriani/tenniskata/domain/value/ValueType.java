@@ -2,7 +2,7 @@ package nl.suriani.tenniskata.domain.value;
 
 import nl.suriani.tenniskata.domain.guard.Guard;
 
-public class ValueType<T> {
+public abstract  class ValueType<T> {
 	public final T value;
 
 	public ValueType(T value) {

@@ -2,19 +2,17 @@ package nl.suriani.tenniskata.application.usecase.match.create;
 
 import nl.suriani.tenniskata.application.port.MatchRepository;
 import nl.suriani.tenniskata.domain.Match;
-import nl.suriani.tenniskata.domain.PlayerDefinition;
+import nl.suriani.tenniskata.domain.TeamDefinition;
 import nl.suriani.tenniskata.domain.enumeration.SetsToWin;
-import nl.suriani.tenniskata.domain.value.Name;
-import nl.suriani.tenniskata.domain.value.PlayerId;
+import nl.suriani.tenniskata.shared.testdata.TestData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
@@ -22,15 +20,14 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class CreateMatchUseCaseTest {
 
-
-	@Spy
+	@Mock
 	private MatchRepository matchRepository;
 
 	@Captor
 	private ArgumentCaptor<Match> matchArgumentCaptor;
 
-	private static final PlayerDefinition PLAYER1 = new PlayerDefinition(new PlayerId(UUID.randomUUID()), new Name("Federer"));
-	private static final PlayerDefinition PLAYER2 = new PlayerDefinition(new PlayerId(UUID.randomUUID()), new Name("Nadal"));
+	private static final TeamDefinition TEAM1 = TestData.federerAndNadal;
+	private static final TeamDefinition TEAM2 = TestData.venusAndSerena;
 
 	@InjectMocks
 	private CreateMatchUseCase useCase;
@@ -45,7 +42,7 @@ class CreateMatchUseCaseTest {
 	}
 
 	private CreateMatchCommand givenARequestToCreateTheMatch() {
-		return new CreateMatchCommand(PLAYER1, PLAYER2, SetsToWin.THREE);
+		return new CreateMatchCommand(TEAM1, TEAM2, SetsToWin.THREE);
 	}
 
 	private void whenAMatchIsCreated(CreateMatchCommand command) {
@@ -57,7 +54,7 @@ class CreateMatchUseCaseTest {
 	private void thenTheAMatchBetweenTheTwoPlayerIsSavedAsConfirmed() {
 		verify(matchRepository).put(matchArgumentCaptor.capture());
 		var match = matchArgumentCaptor.getValue();
-		assertEquals(PLAYER1, match.player1());
-		assertEquals(PLAYER2, match.player2());
+		assertEquals(TEAM1, match.team1());
+		assertEquals(TEAM2, match.team2());
 	}
 }

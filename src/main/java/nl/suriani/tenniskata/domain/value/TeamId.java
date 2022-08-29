@@ -2,13 +2,13 @@ package nl.suriani.tenniskata.domain.value;
 
 import java.util.UUID;
 
-public final class PlayerId extends ValueType<UUID> {
+public final class TeamId extends ValueType<UUID> {
 
-	public PlayerId(UUID value) {
+	public TeamId(UUID value) {
 		super(value);
 	}
 
-	public PlayerId() {
+	public TeamId() {
 		this(UUID.randomUUID());
 	}
 }

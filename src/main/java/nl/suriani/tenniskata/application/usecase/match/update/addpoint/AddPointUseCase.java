@@ -18,7 +18,7 @@ public class AddPointUseCase {
 		}
 
 		var updatedMatch = maybeMatch.get()
-				.addPoint(command.playerId());
+				.addPoint(command.teamId());
 
 		matchRepository.put(updatedMatch);
 		return AddPointResult.success(updatedMatch.getScore());

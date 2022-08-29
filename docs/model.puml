@@ -4,8 +4,8 @@ title Domain Model
 
 class Match {
   -MatchId matchId (1..1)
-  -PlayerDefinition player1 (1..1)
-  -PlayerDefinition player2 (1..1)
+  -TeamDefinition team1 (1..1)
+  -TeamDefinition team2 (1..1)
   -MatchEvent events (1..n)
   -SetsToWin setsToWin (1..1)
   --
@@ -30,25 +30,25 @@ class MatchEvent {
 enum MatchEventType {
     MATCH_CONFIRMED
     MATCH_STARTED
-    POINT_PLAYER1
-    POINT_PLAYER2
+    POINT_TEAM1
+    POINT_TEAM2
     DEUCE
-    ADVANTAGE_IN_PLAYER1
-    ADVANTAGE_IN_PLAYER2
-    GAME_PLAYER1
-    GAME_PLAYER2
+    ADVANTAGE_IN_TEAM1
+    ADVANTAGE_IN_TEAM2
+    GAME_TEAM1
+    GAME_TEAM2
     TIE_BREAK
-    SET_PLAYER1
-    SET_PLAYER2
-    PLAYER1_WON
-    PLAYER2_WON
+    SET_TEAM1
+    SET_TEAM2
+    TEAM1_WON
+    TEAM2_WON
     MATCH_CANCELLED
 }
 
 class Score {
     -Set sets (1..n)
-    -MatchPoints player1 (1..1)
-    -MatchPoints player2 (1..1)
+    -MatchPoints team1 (1..1)
+    -MatchPoints team2 (1..1)
 }
 
 class MatchPoints {
@@ -56,8 +56,8 @@ class MatchPoints {
 }
 
 class Game {
-    -GamePoints player1 (1..1)
-    -GamePoints player2 (1..1)
+    -GamePoints team1 (1..1)
+    -GamePoints team2 (1..1)
 }
 
 enum GamePoints {
@@ -70,8 +70,8 @@ enum GamePoints {
 
 class Set {
     -Game game(1..n)
-    -SetPoints player1(1..1)
-    -SetPoints player2(1..1)
+    -SetPoints team1(1..1)
+    -SetPoints team2(1..1)
 }
 
 class SetPoints {
@@ -83,16 +83,25 @@ class PlayerDefinition {
     -PlayerId playerId (1..1)
 }
 
+class TeamDefinition {
+    -PlayerDefinition player1(1..1)
+    -PlayerDefinition player2(0..1)
+}
+
 class Name {
     -String value (1..1)
 }
 
+class TeamId {
+    -UUID value(1..1)
+}
+
 class PlayerId {
-    -String value (1..1)
+    -UUID value (1..1)
 }
 
 class InstantId {
-    -int value (1..1, >= 0)
+    -Integer value (1..1, >= 0)
 }
 
 Match -down-> MatchId
@@ -108,7 +117,9 @@ Set -down-> Game
 Set -down-> SetPoints
 Game -down-> GamePoints
 
-Match -down-> PlayerDefinition
+Match -down-> TeamDefinition
+Match -down-> TeamId
+TeamDefinition -down-> PlayerDefinition
 PlayerDefinition -down-> Name
 PlayerDefinition -down-> PlayerId
 @enduml

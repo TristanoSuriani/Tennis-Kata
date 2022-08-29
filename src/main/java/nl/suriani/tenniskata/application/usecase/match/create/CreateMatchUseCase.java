@@ -11,8 +11,8 @@ public class CreateMatchUseCase {
 	}
 
 	public CreateMatchResult create(CreateMatchCommand createMatchCommand) {
-		var match = new Match(createMatchCommand.player1(),
-				createMatchCommand.player2(),
+		var match = new Match(createMatchCommand.team1(),
+				createMatchCommand.team2(),
 				createMatchCommand.setsToWin());
 
 		matchRepository.put(match);
