@@ -4,8 +4,9 @@ public enum GamePoints {
 	LOVE("0"),
 	FIFTEEN("15"),
 	THIRTY("30"),
-	FOURTY("40"),
-	ADVANTAGE_IN("40A");
+	FORTY("40"),
+	ADVANTAGE_IN("40A"),
+	GAME("Game");
 
 	private final String display;
 

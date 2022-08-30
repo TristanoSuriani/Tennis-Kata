@@ -8,8 +8,7 @@ class Match {
   -TeamDefinition team2 (1..1)
   -MatchEvent events (1..n)
   -SetsToWin setsToWin (1..1)
-  --
-  +Score getScore()
+  -Score score (1..1)
 }
 
 class MatchId {
@@ -47,8 +46,8 @@ enum MatchEventType {
 
 class Score {
     -Set sets (1..n)
-    -MatchPoints team1 (1..1)
-    -MatchPoints team2 (1..1)
+    -MatchPoints pointsTeam1 (1..1)
+    -MatchPoints pointsTeam2 (1..1)
 }
 
 class MatchPoints {
@@ -56,8 +55,8 @@ class MatchPoints {
 }
 
 class Game {
-    -GamePoints team1 (1..1)
-    -GamePoints team2 (1..1)
+    -GamePoints pointsTeam1 (1..1)
+    -GamePoints pointsTeam2 (1..1)
 }
 
 enum GamePoints {
@@ -70,8 +69,8 @@ enum GamePoints {
 
 class Set {
     -Game game(1..n)
-    -SetPoints team1(1..1)
-    -SetPoints team2(1..1)
+    -SetPoints pointsTeam1(1..1)
+    -SetPoints pointsTeam2(1..1)
 }
 
 class SetPoints {
@@ -110,7 +109,7 @@ Match -left-> SetsToWin
 MatchEvent -left-> MatchEventType
 MatchEvent -down-> InstantId
 
-Match .right-> Score
+Match -right-> Score
 Score -down-> Set
 Score -right-> MatchPoints
 Set -down-> Game

@@ -5,16 +5,17 @@ import nl.suriani.tenniskata.domain.guard.Guard;
 import nl.suriani.tenniskata.domain.value.MatchPoints;
 import nl.suriani.tenniskata.domain.value.SetPoints;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public record Score(List<Set> sets,
-					MatchPoints team1,
-					MatchPoints team2) {
+					MatchPoints pointsTeam1,
+					MatchPoints pointsTeam2) {
 
 	public Score {
 		Guard.isNotNull(sets);
-		Guard.isNotNull(team1);
-		Guard.isNotNull(team2);
+		Guard.isNotNull(pointsTeam1);
+		Guard.isNotNull(pointsTeam2);
 		Guard.isNotEmpty(sets);
 
 		sets = List.copyOf(sets);
@@ -27,5 +28,31 @@ public record Score(List<Set> sets,
 					new SetPoints(0))),
 				new MatchPoints(0),
 				new MatchPoints(0));
+	}
+
+	public Score team1Scores() {
+		/*
+			not complete. it only calculates game and set points at this moment.
+		 */
+		final var lastSet = getLastSet();
+		final var allButLastSet = getAllButLastSet();
+		final var lastSetUpdated = lastSet.team1Scores();
+
+		final var updatedListOfSets = new ArrayList<>(allButLastSet);
+		updatedListOfSets.add(lastSetUpdated);
+
+		return new Score(updatedListOfSets, pointsTeam1, pointsTeam2);
+	}
+
+
+
+	public Set getLastSet() {
+		return sets.stream()
+				.reduce((prev, next) -> next)
+				.orElseThrow();
+	}
+
+	public List<Set> getAllButLastSet() {
+		return sets.subList(0, sets.size() - 1);
 	}
 }

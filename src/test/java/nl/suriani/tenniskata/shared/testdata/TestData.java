@@ -1,7 +1,9 @@
 package nl.suriani.tenniskata.shared.testdata;
 
+import nl.suriani.tenniskata.domain.Match;
 import nl.suriani.tenniskata.domain.PlayerDefinition;
 import nl.suriani.tenniskata.domain.TeamDefinition;
+import nl.suriani.tenniskata.domain.enumeration.SetsToWin;
 import nl.suriani.tenniskata.domain.value.Name;
 
 public interface TestData {
@@ -14,6 +16,8 @@ public interface TestData {
 	TeamDefinition venusAndSerena = team(venusWilliams, serenaWilliams);
 	TeamDefinition justFederer = team(federer);
 	TeamDefinition justNadal = team(nadal);
+
+	Match federerAndNadalVsVenusAndSerenaTwoSetsMatch = new Match(TestData.federerAndNadal, TestData.venusAndSerena, SetsToWin.TWO);
 
 	static TeamDefinition team(PlayerDefinition player1, PlayerDefinition player2) {
 		return new TeamDefinition(player1, player2);
